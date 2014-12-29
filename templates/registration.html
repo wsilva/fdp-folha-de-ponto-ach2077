@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if registered %}
+        Registro efetuado com sucesso
+        <a href="/mytimesheet">Minha Folha</a><br />
+    {% else %}
+        <div>Cadastre-se aqui!</div>
+        <div>
+            <form action="/registration/" method="post" id="user_form">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                <input type="submit" name="submit" value="Gravar" />
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}

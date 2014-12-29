@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+
+    <div id="navbar">
+        <a href="/mytimesheet">Minha Folha</a>
+        <a href="/login">Entrar</a> | <a href="/registration">Cadastrar</a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</body>
+</html>
