@@ -50,6 +50,11 @@ def user_login(request):
     else:
         return render(request, 'login.html', {})
 
+def timesheet(request):
+    return render(
+        request,
+        'timesheet.html'
+    )
 
 def novo(request):
 

@@ -10,8 +10,11 @@
 <body>
 
     <div id="navbar">
-        <a href="/mytimesheet">Minha Folha</a>
+    {% if user.is_authenticated %}
+        <a href="/mytimesheet">Minha Folha</a> | <a href="/logout">Sair</a>
+    {% else %}
         <a href="/login">Entrar</a> | <a href="/registration">Cadastrar</a>
+    {% endif %}
     </div>
 
     {% block content %}
