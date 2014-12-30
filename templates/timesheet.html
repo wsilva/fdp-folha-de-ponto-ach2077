@@ -3,7 +3,7 @@
 {% block content %}
 
     {% if user.is_authenticated %}
-        <h1>Seja bem vindo {{ user.username }}!</h1>
+        <h1>Seja bem vindo {{ user.first_name }} {{ user.last_name }}!</h1>
     {% else %}
         <p>É necessário estar logado. <a href="/login">Entre aqui!</a></p>
     {% endif %}

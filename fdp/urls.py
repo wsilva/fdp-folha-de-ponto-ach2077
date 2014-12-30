@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^novo$', 'pontos.views.novo', name='novo'),
     url(r'^registration/$', 'pontos.views.registration', name='registration'),
     url(r'^login/$', 'pontos.views.user_login', name='login'),
+    url(r'^logout/$', 'pontos.views.user_logout', name='logout'),
     url(r'^mytimesheet/$', 'pontos.views.timesheet', name='timesheet'),
     # url(r'^blog/', include('blog.urls')),
 
