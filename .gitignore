@@ -54,4 +54,4 @@ docs/_build/
 target/
 
 # sqlite
-*.sqlite3
+db.sqlite3
