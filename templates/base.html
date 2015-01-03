@@ -2,18 +2,30 @@
 {% load staticfiles %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Folha de Ponto</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="../dist/semantic.css">
+    <link rel="stylesheet" type="text/css" href="homepage.css"> -->
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+    <!-- <script src="../dist/semantic.js"></script>
+    <script src="homepage.js"></script> -->
     {% block styles %}
     {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
 </head>
-<body>
+<body id="home">
 
     <div id="navbar">
     {% if user.is_authenticated %}
-        Bem vindo {{ user.username }} | <a href="/mytimesheet">Minha Folha</a> | <a href="/logout">Sair</a>
+        Bem vindo {{ user.username }} | <a href="/mytimesheet">Minha Folha</a> | <a href="/accounts/logout">Sair</a>
     {% else %}
-        <a href="/login">Entrar</a> | <a href="/registration">Cadastrar</a>
+        <a href="/accounts/login">Entrar</a> | <a href="/accounts/registration">Cadastrar</a>
     {% endif %}
     </div>
 

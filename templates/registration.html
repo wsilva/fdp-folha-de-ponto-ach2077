@@ -9,7 +9,7 @@
     {% else %}
         <div>Cadastre-se aqui!</div>
         <div>
-            <form action="/registration/" method="post" id="user_form">
+            <form action="/accounts/registration/" method="post" id="user_form">
                 {% csrf_token %}
                 {{ user_form.as_p }}
                 <input type="submit" name="submit" value="Gravar" />

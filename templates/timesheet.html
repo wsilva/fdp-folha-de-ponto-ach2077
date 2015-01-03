@@ -4,8 +4,16 @@
 
     {% if user.is_authenticated %}
         <h1>Seja bem vindo {{ user.first_name }} {{ user.last_name }}!</h1>
+
+        {% for reg in registros %}
+            <div>{{ reg.registro }} - {{ reg.criado_em }} - {{ reg.criado_em }} - {{reg.ip_address}}</div>
+        {% endfor %}
+
+        <hr />
+        <a href="/registro/novo">Novo</a>
+
     {% else %}
-        <p>É necessário estar logado. <a href="/login">Entre aqui!</a></p>
+        <p>É necessário estar logado. <a href="/accounts/login">Entre aqui!</a></p>
     {% endif %}
 
 {% endblock %}
