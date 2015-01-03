@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 
 # Create your views here.
-from .forms import RegistroForm, RegistroPontoForm, UserForm
+from .forms import RegistroForm, UserForm
 from .models import Registro
 
 def registration(request):
@@ -34,7 +34,6 @@ def registration(request):
 
 def user_login(request):
     if request.method == 'POST':
-
         username = request.POST['username']
         password = request.POST['password']
 
@@ -54,9 +53,11 @@ def user_login(request):
 
 @login_required
 def timesheet(request):
+    registros = Registro.objects.filter(user=request.user).order_by('-registro')
     return render(
         request,
-        'timesheet.html'
+        'timesheet.html',
+        {'registros': registros}
     )
 
 @login_required
@@ -64,29 +65,18 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+@login_required
 def novo(request):
-
-    form = RegistroForm(request.POST or None)
-    if form.is_valid():
-        registro = form.cleaned_data['registro']
-        new_registro, created = Registro.objects.get_or_create(registro=registro)
-        print new_registro, created
-        print new_registro.criado_em
-        if created:
-            print "Registro criado!"
-
-    context={"form": form}
-    template = "novo.html"
-    return render(request, template, context)
-
-def novoponto(request):
-
-    form = RegistroPontoForm(request.POST or None)
-    if form.is_valid():
-        new_registro = form.save(commit=False)
-        registro = form.cleaned_data['registro']
-        new_registro_old, created = Registro.objects.get_or_create(registro=registro)
-        # new_registro.save()
+    if request.method=='POST':
+        form=RegistroForm(request.POST)
+        if form.is_valid():
+            registro=form.save(commit=False)
+            registro.user=request.user
+            registro.ip_address = get_ip(request)
+            registro.save()
+            return HttpResponseRedirect('/mytimesheet/')
+    else:
+        form = RegistroForm()
 
     context={"form": form}
     template = "novo.html"
@@ -96,3 +86,14 @@ def home(request):
     context={}
     template = "home.html"
     return render(request, template, context)
+
+def get_ip(request):
+    try:
+        x_forward = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forward:
+            ip = x_forward.split(",")[0]
+        else:
+            ip = request.META.get("REMOTE_ADDR")
+    except:
+        ip = ""
+    return ip
