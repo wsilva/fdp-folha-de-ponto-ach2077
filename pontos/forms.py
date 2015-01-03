@@ -3,13 +3,10 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Registro
 
-class RegistroForm(forms.Form):
-    registro = forms.DateTimeField()
-    comprovante = forms.FileField(required=False)
-
-class RegistroPontoForm(forms.ModelForm):
+class RegistroForm(forms.ModelForm):
     class Meta:
         model = Registro
+        fields=['registro',]
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
