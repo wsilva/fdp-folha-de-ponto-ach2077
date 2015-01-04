@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib.auth.decorators import login_required
 
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 
 # Create your views here.
 from .forms import RegistroForm, UserForm
@@ -18,8 +18,6 @@ def registration(request):
 
         if user_form.is_valid():
             user = user_form.save()
-            user.set_password(user.password)
-            user.save()
             registered = True
         else:
             print user_form.errors
@@ -42,12 +40,11 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/mytimesheet')
+                return redirect('/mytimesheet')
             else:
-                return HttpResponse("Your account is disabled.")
+                return HttpResponse("Conta inativa.")
         else:
-            print "Credenciais da acesso invalidas: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponse("Usuário e ou senha inválidos")
     else:
         return render(request, 'login.html', {})
 
@@ -63,7 +60,7 @@ def timesheet(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return redirect('/')
 
 @login_required
 def novo(request):
@@ -74,13 +71,37 @@ def novo(request):
             registro.user=request.user
             registro.ip_address = get_ip(request)
             registro.save()
-            return HttpResponseRedirect('/mytimesheet/')
+            return redirect('/mytimesheet/')
     else:
         form = RegistroForm()
 
     context={"form": form}
     template = "novo.html"
     return render(request, template, context)
+
+@login_required
+def edit(request, pk):
+    registro = get_object_or_404(Registro, pk=pk)
+    if request.method == "POST":
+        form = RegistroForm(request.POST, instance=registro)
+        if form.is_valid():
+            registro = form.save(commit=False)
+            registro.user = request.user
+            registro.ip_address = get_ip(request)
+            registro.save()
+            return redirect('/mytimesheet/')
+    else:
+        form = RegistroForm(instance=registro)
+
+    context={"form": form}
+    template = "edit.html"
+    return render(request, template, context)
+
+@login_required
+def remove(request, pk):
+    registro = get_object_or_404(Registro, pk=pk)
+    registro.delete()
+    return redirect('/mytimesheet/')
 
 def home(request):
     context={}

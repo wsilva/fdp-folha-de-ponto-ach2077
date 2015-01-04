@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Registro de Ponto:</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <a href="/mytimesheet">voltar</a>
+    <input type="submit" value="Gravar">
+</form>
+
+{% endblock %}

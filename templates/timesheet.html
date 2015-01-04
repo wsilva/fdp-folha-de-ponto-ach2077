@@ -6,7 +6,11 @@
         <h1>Seja bem vindo {{ user.first_name }} {{ user.last_name }}!</h1>
 
         {% for reg in registros %}
-            <div>{{ reg.registro }} - {{ reg.criado_em }} - {{ reg.criado_em }} - {{reg.ip_address}}</div>
+            <div>
+                {{ reg.registro }} - {{ reg.criado_em }} - {{ reg.criado_em }} |
+                <a href="/registro/edit/{{reg.id}}">editar</a> |
+                <a href="/registro/remove/{{reg.id}}">remover</a>
+            </div>
         {% endfor %}
 
         <hr />
