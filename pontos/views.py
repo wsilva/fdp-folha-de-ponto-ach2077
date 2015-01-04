@@ -8,13 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 # Create your views here.
-from .forms import RegistroForm, UserForm
+from .forms import RegistroForm, RegistrationForm
 from .models import Registro
 
 def registration(request):
     registered = False
     if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
+        user_form = RegistrationForm(data=request.POST)
 
         if user_form.is_valid():
             user = user_form.save()
@@ -22,7 +22,7 @@ def registration(request):
         else:
             print user_form.errors
     else:
-        user_form = UserForm()
+        user_form = RegistrationForm()
 
     return render(
         request,

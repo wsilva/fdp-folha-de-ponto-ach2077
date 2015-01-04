@@ -8,7 +8,7 @@ class RegistroForm(forms.ModelForm):
         model = Registro
         fields=['registro',]
 
-class UserForm(forms.ModelForm):
+class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     password2 = forms.CharField(label='Confirmação de Senha', widget=forms.PasswordInput())
 
@@ -17,7 +17,7 @@ class UserForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'username', 'email', 'password')
 
     def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
+        super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
 
@@ -29,7 +29,7 @@ class UserForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
-        user = super(UserForm, self).save(commit=False)
+        user = super(RegistrationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
