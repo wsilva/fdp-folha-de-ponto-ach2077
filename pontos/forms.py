@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
-from .models import Registro
+from .models import Timesheet
 
-class RegistroForm(forms.ModelForm):
+class TimesheetForm(forms.ModelForm):
     class Meta:
-        model = Registro
+        model = Timesheet
         fields=['registro',]
 
 class RegistrationForm(forms.ModelForm):

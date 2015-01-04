@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 # Create your views here.
-from .forms import RegistroForm, RegistrationForm
-from .models import Registro
+from .forms import TimesheetForm, RegistrationForm
+from .models import Timesheet
 
 def registration(request):
     registered = False
@@ -50,7 +50,7 @@ def user_login(request):
 
 @login_required
 def timesheet(request):
-    registros = Registro.objects.filter(user=request.user).order_by('-registro')
+    registros = Timesheet.objects.filter(user=request.user).order_by('-registro')
     return render(
         request,
         'timesheet.html',
@@ -65,7 +65,7 @@ def user_logout(request):
 @login_required
 def novo(request):
     if request.method=='POST':
-        form=RegistroForm(request.POST)
+        form=TimesheetForm(request.POST)
         if form.is_valid():
             registro=form.save(commit=False)
             registro.user=request.user
@@ -73,7 +73,7 @@ def novo(request):
             registro.save()
             return redirect('/mytimesheet/')
     else:
-        form = RegistroForm()
+        form = TimesheetForm()
 
     context={"form": form}
     template = "novo.html"
@@ -81,9 +81,9 @@ def novo(request):
 
 @login_required
 def edit(request, pk):
-    registro = get_object_or_404(Registro, pk=pk)
+    registro = get_object_or_404(Timesheet, pk=pk)
     if request.method == "POST":
-        form = RegistroForm(request.POST, instance=registro)
+        form = TimesheetForm(request.POST, instance=registro)
         if form.is_valid():
             registro = form.save(commit=False)
             registro.user = request.user
@@ -91,7 +91,7 @@ def edit(request, pk):
             registro.save()
             return redirect('/mytimesheet/')
     else:
-        form = RegistroForm(instance=registro)
+        form = TimesheetForm(instance=registro)
 
     context={"form": form}
     template = "edit.html"
@@ -99,7 +99,7 @@ def edit(request, pk):
 
 @login_required
 def remove(request, pk):
-    registro = get_object_or_404(Registro, pk=pk)
+    registro = get_object_or_404(Timesheet, pk=pk)
     registro.delete()
     return redirect('/mytimesheet/')
 

@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Registro(models.Model):
+class Timesheet(models.Model):
 
     user = models.ForeignKey('auth.user')
     registro = models.DateTimeField(auto_now_add = False, auto_now=False)
@@ -13,7 +13,7 @@ class Registro(models.Model):
 
 
     def save(self, *args, **kwargs):
-        super(Registro, self).save(*args, **kwargs)
+        super(Timesheet, self).save(*args, **kwargs)
 
     def __unicode__(self):
 
