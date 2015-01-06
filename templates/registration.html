@@ -1,20 +1,29 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-    <h1>Cadastro</h1>
+<div class="ui page grid main">
+    <div class="row">
+        <div class="column padding-reset">
+            <div class="ui large message">
+                <h1 class="ui header">Cadastro</h1>
+                {% if registered %}
+                    <div>Registro efetuado com sucesso <br />
+                    <a href="/mytimesheet">Minha Folha</a><br />
+                {% else %}
+                    <div>Cadastre-se aqui para utilizar a folha de ponto.</div>
+                    <div class="ui form small">
+                        <form action="/accounts/registration/" method="post" id="user_form">
+                            {% csrf_token %}
+                            {{ user_form.as_p }}
+                            <input type="submit" name="submit" value="Gravar" class="ui small blue button submit" />
+                        </form>
+                    </div>
+                {% endif %}
 
-    {% if registered %}
-        Registro efetuado com sucesso
-        <a href="/mytimesheet">Minha Folha</a><br />
-    {% else %}
-        <div>Cadastre-se aqui!</div>
-        <div>
-            <form action="/accounts/registration/" method="post" id="user_form">
-                {% csrf_token %}
-                {{ user_form.as_p }}
-                <input type="submit" name="submit" value="Gravar" />
-            </form>
+            </div>
         </div>
-    {% endif %}
+    </div>
+</div>
 
 {% endblock %}

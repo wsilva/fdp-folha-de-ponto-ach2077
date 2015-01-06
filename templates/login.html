@@ -2,16 +2,31 @@
 
 {% block content %}
 
-<h1>Login</h1>
+<div class="ui page grid main">
+    <div class="row">
+        <div class="column padding-reset">
+            <div class="ui large message">
+                <h1 class="ui header">Login</h1>
+                <div class="ui form small">
+                    {% if error_message %}
+                    <div class="ui error form segment">
+                        <div class="ui error message">
+                            <div class="header">Erro ao entrar</div>
+                            <p>{{ error_message }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <form id="login_form" method="post" action="/accounts/login/">
+                        {% csrf_token %}
 
-<form id="login_form" method="post" action="/accounts/login/">
-    {% csrf_token %}
-    Usuário: <input type="text" name="username" value="" size="50" />
-    <br />
-    Senha: <input type="password" name="password" value="" size="50" />
-    <br />
+                        {{ login_form.as_p }}
 
-    <input type="submit" value="Entrar" />
-</form>
+                        <input type="submit" value="Entrar" class="ui small blue button submit" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

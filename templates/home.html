@@ -2,11 +2,19 @@
 {% load staticfiles %}
 
 
-{% block styles %}
-
-{% endblock %}
-
-
 {% block content %}
-<h1>Home</h1>
+
+<div class="ui page grid main">
+    <div class="row">
+        <div class="column padding-reset">
+            <div class="ui large message">
+                <h1 class="ui huge header">Folha de Ponto</h1>
+                <p>Sistema de folha de ponto on-line para facilitar o controle diário de entrada, almoço e saída</p>
+                <p>Utilizando framework Django, github para controle de versão e rodando na AWS</p>
+                <a href="/accounts/login" class="ui blue button">Entrar &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -1,11 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Novo registro de Ponto:</h1>
-<form action="" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Gravar">
-</form>
+
+<div class="ui page grid main">
+    <div class="row">
+        <div class="column padding-reset">
+            <div class="ui large message">
+                <h1 class="ui header">Novo registro de Ponto</h1>
+                <div class="ui form small">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Gravar" class="ui small blue button submit" >
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
