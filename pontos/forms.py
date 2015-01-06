@@ -3,6 +3,10 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Timesheet
 
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Usuário', max_length=50)
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput())
+
 class TimesheetForm(forms.ModelForm):
     class Meta:
         model = Timesheet

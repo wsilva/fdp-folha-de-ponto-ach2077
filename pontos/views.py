@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 # Create your views here.
-from .forms import TimesheetForm, RegistrationForm
+from .forms import TimesheetForm, RegistrationForm, LoginForm
 from .models import Timesheet
 
 def registration(request):
@@ -24,38 +24,52 @@ def registration(request):
     else:
         user_form = RegistrationForm()
 
-    return render(
-        request,
-        'registration.html',
-        {'user_form': user_form, 'registered': registered}
-    )
+    template = 'registration.html'
+    context = {'user_form': user_form, 'registered': registered}
+    return render(request, template, context)
 
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        login_form = LoginForm(request.POST)
+        # username = request.POST['username']
+        # password = request.POST['password']
+        if login_form.is_valid():
+            username = login_form.cleaned_data['username']
+            password = login_form.cleaned_data['password']
 
-        user = authenticate(username=username, password=password)
+            user = authenticate(username=username, password=password)
 
-        if user:
-            if user.is_active:
-                login(request, user)
-                return redirect('/mytimesheet')
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/mytimesheet')
+                else:
+                    # return HttpResponse("Conta inativa.")
+                    error_message = "Conta inativa!"
+                    login_form = LoginForm()
             else:
-                return HttpResponse("Conta inativa.")
+                # return HttpResponse("Usuário e ou senha inválidos")
+                error_message = "Usuário e ou senha inválidos!"
+                login_form = LoginForm()
         else:
-            return HttpResponse("Usuário e ou senha inválidos")
+            error_message = "O nome de usuário e a senha devem ser informadas para acessar!"
+            login_form = LoginForm()
+
     else:
-        return render(request, 'login.html', {})
+        error_message = False
+        login_form = LoginForm()
+
+    print "erro: '%s'" % error_message
+    template = 'login.html'
+    context = {'login_form': login_form, 'error_message': error_message}
+    return render(request, template, context)
 
 @login_required
 def timesheet(request):
     registros = Timesheet.objects.filter(user=request.user).order_by('-registro')
-    return render(
-        request,
-        'timesheet.html',
-        {'registros': registros}
-    )
+    template = 'timesheet.html'
+    context = {'registros': registros}
+    return render(request, template, context)
 
 @login_required
 def user_logout(request):
