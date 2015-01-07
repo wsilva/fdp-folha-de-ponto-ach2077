@@ -67,9 +67,43 @@ def user_login(request):
 @login_required
 def timesheet(request):
     registros = Timesheet.objects.filter(user=request.user).order_by('-registro')
+    dashboard = {}
+    status = {}
+    for reg in registros:
+        reg_date_str = reg.registro.strftime('%d/%m/%Y')
+        if reg_date_str in dashboard:
+            dashboard[reg_date_str].insert(0, reg)
+            status[reg_date_str] = getStatus(dashboard[reg_date_str])
+        else:
+            dashboard[reg_date_str] = []
+            dashboard[reg_date_str].insert(0, reg)
+            status[reg_date_str] = 'Somente uma entrada'
+    print dashboard
+    print status
+
+
     template = 'timesheet.html'
     context = {'registros': registros}
     return render(request, template, context)
+
+def getStatus(registros):
+    registros_size = len(registros)
+
+    if registros_size==1:
+        return "Somente uma entrada"
+    elif registros_size==2:
+        return "retorno do almoço estimado para x"
+    elif registros_size==3:
+        return "saída estimada para x horas"
+    elif registros_size==4:
+        return "banco de horas de x horas"
+    elif registros_size==5:
+        return "retorno da janta estimado para x"
+    elif registros_size==6:
+        return "banco de horas de x horas (com janta)"
+
+    return 'yada'
+
 
 @login_required
 def user_logout(request):
