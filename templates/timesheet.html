@@ -1,23 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="row">
+    <div class="column">
+        <h3 class="ui header"><small>Folha de ponto de</small><br>{{ user.first_name }} {{ user.last_name }}</h3>
+        <div class="ui divider"></div>
+    </div>
+</div>
 
-    {% if user.is_authenticated %}
-        <h1>Seja bem vindo {{ user.first_name }} {{ user.last_name }}!</h1>
+<div class="row">
+    <div class="column">
+        <a href="/registro/novo" class="ui blue button">Novo registro</a>
+    </div>
+</div>
 
-        {% for reg in registros %}
-            <div>
-                {{ reg.registro }} - {{ reg.criado_em }} - {{ reg.criado_em }} |
-                <a href="/registro/edit/{{reg.id}}">editar</a> |
-                <a href="/registro/remove/{{reg.id}}">remover</a>
-            </div>
-        {% endfor %}
-
-        <hr />
-        <a href="/registro/novo">Novo</a>
-
-    {% else %}
-        <p>É necessário estar logado. <a href="/accounts/login">Entre aqui!</a></p>
-    {% endif %}
+<div class="row">
+    <div class="column">
+        <div class="ui six column grid center aligned">
+            {% for reg in registros %}
+                {% ifchanged %}
+                    <!-- close six column --></div>
+                    <h4 class="ui header center aligned">{{ reg.registro|date:"d/m/Y" }}</h4>
+                    <div class="ui divider"></div>
+                    <!-- reopen six column -->
+                    <div class="ui six column grid center aligned">
+                {% endifchanged %}
+                <div class="column panel">
+                    <div class="ui secondary top purple attached segment right aligned">
+                        <a href="/registro/remove/{{reg.id}}"><i class="remove icon"></i></a>
+                    </div>
+                    <div class="ui bottom attached segment center aligned">
+                        <a href="/registro/edit/{{reg.id}}">{{ reg.registro|date:"H:i" }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
