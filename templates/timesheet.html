@@ -15,26 +15,35 @@
 </div>
 
 <div class="row">
-    <div class="column">
-        <div class="ui six column grid center aligned">
-            {% for reg in registros %}
-                {% ifchanged %}
-                    <!-- close six column --></div>
-                    <h4 class="ui header center aligned">{{ reg.registro|date:"d/m/Y" }}</h4>
-                    <div class="ui divider"></div>
-                    <!-- reopen six column -->
-                    <div class="ui six column grid center aligned">
-                {% endifchanged %}
-                <div class="column panel">
-                    <div class="ui secondary top purple attached segment right aligned">
-                        <a href="/registro/remove/{{reg.id}}"><i class="remove icon"></i></a>
-                    </div>
-                    <div class="ui bottom attached segment center aligned">
-                        <a href="/registro/edit/{{reg.id}}">{{ reg.registro|date:"H:i" }}</a>
-                    </div>
+    <div class="column message" id="dashboard">
+        {% for reg_day, registros in dashboard.iteritems %}
+            <div class="ui ui large message">
+                <h4 class="ui header aligned">
+                    {{ reg_day }}
+                    <br>
+                    <small>
+                        {% for status_day, reg_status in status.iteritems %}
+                            {% if status_day == reg_day %}
+                                {{ reg_status }}
+                            {% endif %}
+                        {% endfor %}
+                    </small>
+                </h4>
+                <div class="ui divider"></div>
+                <div class="ui six column grid center aligned">
+                    {% for reg in registros %}
+                        <div class="column panel">
+                            <div class="ui secondary top purple attached segment right aligned">
+                                <a href="/registro/remove/{{reg.id}}"><i class="remove icon"></i></a>
+                            </div>
+                            <div class="ui bottom attached segment center aligned">
+                                <a href="/registro/edit/{{reg.id}}">{{ reg.registro|date:"H:i" }} <i class="edit icon"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
