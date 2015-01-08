@@ -26,16 +26,17 @@
     <div class="ui grid">
         <div class="computer tablet only row">
             <div class="ui purple inverted fixed menu navbar page grid">
-                <a href="/" class="brand item">FDP - Folha de Ponto</a>
+            <i class="calendar icon"></i>
+                <a href="/" class="brand item"><i class="calendar icon"></i>FDP - Folha de Ponto</a>
                 <!-- <a href="/" class="active item">Home</a> -->
                 <div class="right menu">
                     {% if user.is_authenticated %}
-                        <div class="header item">Bem vindo {{ user.username }}</div>
-                        <a href="/mytimesheet" class="item">Minha Folha</a>
-                        <a href="/accounts/logout" class="item">Sair</a>
+                        <div class="header item">Bem vindo {{ user.username }} <i class="user icon"></i></div>
+                        <a href="/mytimesheet" class="item">Minha Folha <i class="dashboard icon"></i></a>
+                        <a href="/accounts/logout" class="item">Sair <i class="sign out icon"></i></a>
                     {% else %}
-                        <a href="/accounts/login" class="item">Entrar</a>
-                        <a href="/accounts/registration" class="item">Cadastrar</a>
+                        <a href="/accounts/login" class="item">Entrar <i class="sign in icon"></i></a>
+                        <a href="/accounts/registration" class="item">Cadastrar <i class="add icon"></i></a>
                     {% endif %}
                 </div>
             </div>
@@ -52,12 +53,12 @@
             <div class="ui vertical navbar menu">
                 <div class="menu">
                     {% if user.is_authenticated %}
-                        <div class="header item">Bem vindo {{ user.username }}</div>
-                        <a href="/mytimesheet" class="item">Minha Folha</a>
-                        <a href="/accounts/logout" class="item">Sair</a>
+                        <div class="header item">Bem vindo {{ user.username }} <i class="user icon"></i></div>
+                        <a href="/mytimesheet" class="item">Minha Folha <i class="dashboard icon"></i></a>
+                        <a href="/accounts/logout" class="item">Sair<i class="sign out icon"></i></a>
                     {% else %}
-                        <a href="/accounts/login" class="item">Entrar</a>
-                        <a href="/accounts/registration" class="item">Cadastrar</a>
+                        <a href="/accounts/login" class="item">Entrar <i class="sign in icon"></i></a>
+                        <a href="/accounts/registration" class="item">Cadastrar <i class="add icon"></i></a>
                     {% endif %}
                 </div>
             </div>

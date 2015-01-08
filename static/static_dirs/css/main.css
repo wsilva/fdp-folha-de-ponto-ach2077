@@ -44,3 +44,13 @@ body{
     width: 100%;
     display: none;
 }
+
+#dashboard a:link, #dashboard a:visited, #dashboard a:hover, #dashboard a:active {
+    text-decoration: none;
+    color: rgb(86, 79, 138);
+}
+
+#dashboard a:hover {
+    text-decoration: none;
+    color: blue;
+}
