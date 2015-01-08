@@ -80,14 +80,15 @@ def timesheet(request):
             dashboard[reg_date_str] = []
             dashboard[reg_date_str].append(reg.registro)
             status[reg_date_str] = 'Somente uma entrada'
-    # print dashboard
-    # print status
+    print dashboard
+    print status
 
     template = 'timesheet.html'
     context = {'registros': registros, 'dashboard': dashboard, 'status': status}
     return render(request, template, context)
 
-def getStatus(registros):
+def getStatus(registros_list):
+    registros = list(registros_list)
     registros_size = len(registros)
     if registros_size==1:
         entrada = registros.pop()
@@ -114,7 +115,9 @@ def getStatus(registros):
         first_round = saida_almoco - entrada
         second_round = saida - retorno_almoco
         trabalhado = first_round + second_round
-        return "{} trabalhados.".format(trabalhado.strftime('%H horas e %M minutos'))
+        hours, remainder = divmod(trabalhado.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return "{} horas e {} minutos trabalhados.".format(hours, minutes)
     elif registros_size==5:
         entrada = registros.pop()
         saida_almoco = registros.pop()
@@ -137,7 +140,9 @@ def getStatus(registros):
         second_round = saida_janta - retorno_almoco
         third_round = saida - retorno_janta
         trabalhado = first_round + second_round + third_round
-        return "{} trabalhados (com saída para janta).".format(trabalhado.strftime('%H horas e %M minutos'))
+        hours, remainder = divmod(trabalhado.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return "{} horas e {} minutos trabalhados (com saída para janta).".format(hours, minutes)
     return 'Quantidade de registros mal formatada.'
 
 @login_required
