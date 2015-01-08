@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
+
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.contrib.auth import authenticate, login, logout
@@ -72,38 +74,71 @@ def timesheet(request):
     for reg in registros:
         reg_date_str = reg.registro.strftime('%d/%m/%Y')
         if reg_date_str in dashboard:
-            dashboard[reg_date_str].insert(0, reg)
+            dashboard[reg_date_str].append(reg.registro)
             status[reg_date_str] = getStatus(dashboard[reg_date_str])
         else:
             dashboard[reg_date_str] = []
-            dashboard[reg_date_str].insert(0, reg)
+            dashboard[reg_date_str].append(reg.registro)
             status[reg_date_str] = 'Somente uma entrada'
-    print dashboard
-    print status
-
+    # print dashboard
+    # print status
 
     template = 'timesheet.html'
-    context = {'registros': registros}
+    context = {'registros': registros, 'dashboard': dashboard, 'status': status}
     return render(request, template, context)
 
 def getStatus(registros):
     registros_size = len(registros)
-
     if registros_size==1:
-        return "Somente uma entrada"
+        entrada = registros.pop()
+        saida = entrada + timedelta(hours=8)
+        return "Saída estimada para {}.".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==2:
-        return "retorno do almoço estimado para x"
+        entrada = registros.pop()
+        saida_almoco = registros.pop()
+        retorno_almoco = saida_almoco + timedelta(hours=1)
+        return "Retorno do almoço estimado para {}.".format(retorno_almoco.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==3:
-        return "saída estimada para x horas"
+        entrada = registros.pop()
+        saida_almoco = registros.pop()
+        retorno_almoco = registros.pop()
+        first_round = saida_almoco - entrada
+        second_round = timedelta(hours=8) - first_round
+        saida = retorno_almoco + second_round
+        return "Saída estimada para {}.".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==4:
-        return "banco de horas de x horas"
+        entrada = registros.pop()
+        saida_almoco = registros.pop()
+        retorno_almoco = registros.pop()
+        saida = registros.pop()
+        first_round = saida_almoco - entrada
+        second_round = saida - retorno_almoco
+        trabalhado = first_round + second_round
+        return "{} trabalhados.".format(trabalhado.strftime('%H horas e %M minutos'))
     elif registros_size==5:
-        return "retorno da janta estimado para x"
+        entrada = registros.pop()
+        saida_almoco = registros.pop()
+        retorno_almoco = registros.pop()
+        saida_janta = registros.pop()
+        retorno_janta = registros.pop()
+        first_round = saida_almoco - entrada
+        second_round = saida_janta - retorno_almoco
+        third_round = timedelta(hours=8) - first_round + second_round
+        saida = retorno_janta + third_round
+        return "Saída estimada para {} (com saída para janta).".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==6:
-        return "banco de horas de x horas (com janta)"
-
-    return 'yada'
-
+        entrada = registros.pop()
+        saida_almoco = registros.pop()
+        retorno_almoco = registros.pop()
+        saida_janta = registros.pop()
+        retorno_janta = registros.pop()
+        saida = registros.pop()
+        first_round = saida_almoco - entrada
+        second_round = saida_janta - retorno_almoco
+        third_round = saida - retorno_janta
+        trabalhado = first_round + second_round + third_round
+        return "{} trabalhados (com saída para janta).".format(trabalhado.strftime('%H horas e %M minutos'))
+    return 'Quantidade de registros mal formatada.'
 
 @login_required
 def user_logout(request):
