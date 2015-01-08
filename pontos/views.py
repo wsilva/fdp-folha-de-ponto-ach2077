@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 
+from django.utils import timezone
+
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.contrib.auth import authenticate, login, logout
@@ -83,20 +85,21 @@ def getStatus(registros_list):
     registros_size = len(registros)
     if registros_size==1:
         entrada = registros.pop()['registro']
-        saida = entrada + timedelta(hours=8)
+        saida = timezone.localtime(entrada + timedelta(hours=8))
         return "Saída estimada para {}.".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==2:
         entrada = registros.pop()['registro']
         saida_almoco = registros.pop()['registro']
-        retorno_almoco = saida_almoco + timedelta(hours=1)
+        retorno_almoco = timezone.localtime(saida_almoco + timedelta(hours=1))
         return "Retorno do almoço estimado para {}.".format(retorno_almoco.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==3:
+        print registros
         entrada = registros.pop()['registro']
         saida_almoco = registros.pop()['registro']
         retorno_almoco = registros.pop()['registro']
         first_round = saida_almoco - entrada
         second_round = timedelta(hours=8) - first_round
-        saida = retorno_almoco + second_round
+        saida = timezone.localtime(retorno_almoco + second_round)
         return "Saída estimada para {}.".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==4:
         entrada = registros.pop()['registro']
@@ -118,7 +121,7 @@ def getStatus(registros_list):
         first_round = saida_almoco - entrada
         second_round = saida_janta - retorno_almoco
         third_round = timedelta(hours=8) - first_round + second_round
-        saida = retorno_janta + third_round
+        saida = timezone.localtime(retorno_janta + third_round)
         return "Saída estimada para {} (com saída para janta).".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==6:
         entrada = registros.pop()['registro']
