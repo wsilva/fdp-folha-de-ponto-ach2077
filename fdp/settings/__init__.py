@@ -4,5 +4,7 @@ try:
     from .dev import *
     live = False
 except:
-    from .prod import *
     live = True
+
+if live:
+    from .prod import *
