@@ -1,0 +1,14 @@
+Django==1.7.1
+MySQL-python==1.2.5
+PyYAML==3.11
+cement==2.4.0
+distribute==0.6.31
+jmespath==0.5.0
+python-dateutil==2.4.0
+six==1.8.0
+wsgiref==0.1.2
+dj-database-url==0.3.0
+dj-static==0.0.6
+gunicorn==19.1.1
+static==0.4
+wsgiref==0.1.2
