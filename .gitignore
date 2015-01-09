@@ -55,3 +55,6 @@ target/
 
 # sqlite
 db.sqlite3
+
+# dev settings
+fdp/settings/dev.py
