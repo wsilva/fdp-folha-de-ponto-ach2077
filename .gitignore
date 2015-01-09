@@ -55,6 +55,11 @@ target/
 
 # sqlite
 db.sqlite3
+./db.sqlite3
 
 # dev settings
 fdp/settings/dev.py
+./fdp/settings/dev.py
+
+# fabric
+./fabfile/
