@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
-
+from collections import OrderedDict
 from django.utils import timezone
-
 from django.shortcuts import render, get_object_or_404, redirect
-
 from django.contrib.auth import authenticate, login, logout
-
 from django.contrib.auth.decorators import login_required
-
 from django.http import HttpResponse
 
 # Create your views here.
@@ -59,7 +55,7 @@ def user_login(request):
         error_message = False
         login_form = LoginForm()
 
-    print "erro: '%s'" % error_message
+    print "Erro: '%s'" % error_message
     template = 'login.html'
     context = {'login_form': login_form, 'error_message': error_message}
     return render(request, template, context)
@@ -76,8 +72,10 @@ def timesheet(request):
         dashboard[reg_date_str].append({'id': reg.id, 'registro': reg.registro})
         status[reg_date_str] = getStatus(dashboard[reg_date_str])
 
+    sorted_dashboard = OrderedDict(sorted(dashboard.items(), key=lambda x: x[0], reverse=True))
+
     template = 'timesheet.html'
-    context = {'registros': registros, 'dashboard': dashboard, 'status': status}
+    context = {'registros': registros, 'dashboard': sorted_dashboard, 'status': status}
     return render(request, template, context)
 
 def getStatus(registros_list):
@@ -93,7 +91,6 @@ def getStatus(registros_list):
         retorno_almoco = timezone.localtime(saida_almoco + timedelta(hours=1))
         return "Retorno do almoço estimado para {}.".format(retorno_almoco.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==3:
-        print registros
         entrada = registros.pop()['registro']
         saida_almoco = registros.pop()['registro']
         retorno_almoco = registros.pop()['registro']
