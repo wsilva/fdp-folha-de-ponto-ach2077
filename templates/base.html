@@ -52,6 +52,7 @@
             </div>
             <div class="ui vertical navbar menu">
                 <div class="menu">
+                    <a href="/" class="item">Home</a>
                     {% if user.is_authenticated %}
                         <div class="header item">Bem vindo {{ user.username }} <i class="user icon"></i></div>
                         <a href="/mytimesheet" class="item">Minha Folha <i class="dashboard icon"></i></a>
@@ -68,6 +69,43 @@
     <div class="ui page grid main">
     {% block content %}
     {% endblock %}
+    </div>
+
+    <div class="ui page grid main">
+    </div>
+
+    <div class="ui inverted black footer vertical segment">
+        <div class="container">
+            <div class="ui stackable inverted divided relaxed grid">
+                <div class="eight wide column">
+                <h3 class="ui inverted header">FDP - Folha de Ponto</h3>
+                    <p>Sistema pessoal para gerenciar folha de ponto.</p>
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="UY6C6DEAN8BLU">
+                        <button type="submit" class="ui purple small button" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">Gostou, doou!</button>
+                    </form>
+                </div>
+                <div class="four wide column">
+                    <h5 class="ui purple inverted header center aligned">Feito com</h5>
+                    <div class="ui inverted link list">
+                        <a class="item" href="https://www.djangoproject.com/" target="_blank">
+                            <img class="ui small image" src="http://www.djangoproject.com/s/img/logo-django.42234b631760.svg">
+                        </a>
+                        <a class="item" href="https://github.com/Semantic-Org/Semantic-UI" target="_blank">
+                            <img class="ui small image" src="http://semantic-ui.com/images/logo.png" alt="Semantic-UI">
+                        </a>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h5 class="ui purple inverted header center aligned">Mais Info</h5>
+                    <div class="ui inverted link list">
+                        <a class="item" href="https://github.com/wsilva/folha-de-ponto-ach2077" target="_blank"><i class="github icon"></i> Code</a>
+                        <a class="item" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

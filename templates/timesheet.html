@@ -17,7 +17,7 @@
 <div class="row">
     <div class="column message" id="dashboard">
         {% for reg_day, registros in dashboard.iteritems %}
-            <div class="ui ui large message">
+            <div class="ui message">
                 <h4 class="ui header aligned">
                     {{ reg_day }}
                     <br>
@@ -43,8 +43,21 @@
                     {% endfor %}
                 </div>
             </div>
+        {% empty %}
+            <div class="ui message center aligned">
+                <h4 class="ui header center aligned">Nenhum registro de ponto por enquanto.</h4>
+            </div>
         {% endfor %}
+        <div class="ui info small message">
+            <div class="header">
+            Estimativas dos pontos
+            </div>
+            <ul class="list">
+                <li>As estimativas de saída e retornos de refeições são calculadas utilizando 8h de trabalho (regime CLT) como uma jornada.</li>
+            </ul>
+        </div>
     </div>
 </div>
+
 
 {% endblock %}

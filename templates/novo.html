@@ -3,12 +3,13 @@
 {% block content %}
 <div class="row">
     <div class="column padding-reset">
-        <div class="ui large message">
+        <div class="ui message">
             <h1 class="ui header">Novo registro de Ponto</h1>
             <div class="ui form small">
                 <form action="" method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
+                    <a href="/mytimesheet" class="ui small button">Voltar</a>
                     <input type="submit" value="Gravar" class="ui small blue button submit" >
                 </form>
             </div>
