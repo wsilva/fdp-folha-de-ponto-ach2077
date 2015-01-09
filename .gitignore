@@ -61,5 +61,8 @@ db.sqlite3
 fdp/settings/dev.py
 ./fdp/settings/dev.py
 
-# fabric
-./fabfile/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
