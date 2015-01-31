@@ -2,11 +2,11 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Timesheet
+from .models import SpotHit
 
-class TimesheetAdmin(admin.ModelAdmin):
-    list_display=['user', 'registro', 'criado_em', 'alterado_em']
+class SpotHitAdmin(admin.ModelAdmin):
+    list_display=['user', 'spothit_datetime', 'created_at', 'updated_at']
     class Meta:
-        model = Timesheet
+        model = SpotHit
 
-admin.site.register(Timesheet, TimesheetAdmin)
+admin.site.register(SpotHit, SpotHitAdmin)

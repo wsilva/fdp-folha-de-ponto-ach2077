@@ -2,19 +2,23 @@ from django.db import models
 
 # Create your models here.
 
-class Timesheet(models.Model):
+class SpotHit(models.Model):
 
     user = models.ForeignKey('auth.user')
-    registro = models.DateTimeField(auto_now_add = False, auto_now=False)
-    # comprovante = models.FileField(upload_to=UPLOAD_DIR, max_length=100)
-    criado_em = models.DateTimeField(auto_now_add = True, auto_now=False)
-    alterado_em = models.DateTimeField(auto_now_add = False, auto_now=True)
+    spothit_datetime = models.DateTimeField(auto_now_add = False, auto_now=False)
+    labor_day = models.ForeignKey(LaborDay)
+    created_at = models.DateTimeField(auto_now_add = True, auto_now=False)
+    updated_at = models.DateTimeField(auto_now_add = False, auto_now=True)
     ip_address = models.CharField(max_length=120, default='0.0.0.0')
 
 
     def save(self, *args, **kwargs):
-        super(Timesheet, self).save(*args, **kwargs)
+        super(SpotHit, self).save(*args, **kwargs)
 
     def __unicode__(self):
 
-        return "%s" % self.registro
+        return "%s" % self.spothit_datetime
+
+class LaborDay(models.Model):
+    spothit_date = models.DateTime(auto_now_add = False, auto_now=False)
+

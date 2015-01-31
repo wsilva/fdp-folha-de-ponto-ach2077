@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
-from .models import Timesheet
+from .models import SpotHit
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Usuário', max_length=50)
     password = forms.CharField(label='Senha', widget=forms.PasswordInput())
 
-class TimesheetForm(forms.ModelForm):
+class SpotHitForm(forms.ModelForm):
     class Meta:
-        model = Timesheet
-        fields=['registro',]
+        model = SpotHit
+        fields=['spothit_datetime',]
 
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

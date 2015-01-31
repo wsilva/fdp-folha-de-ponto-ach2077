@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 # Create your views here.
-from .forms import TimesheetForm, RegistrationForm, LoginForm
-from .models import Timesheet
+from .forms import SpotHitForm, RegistrationForm, LoginForm
+from .models import SpotHit
 
 def registration(request):
     registered = False
@@ -62,14 +62,14 @@ def user_login(request):
 
 @login_required
 def timesheet(request):
-    registros = Timesheet.objects.filter(user=request.user).order_by('-registro')
+    registros = SpotHit.objects.filter(user=request.user).order_by('-spothit_datetime')
     dashboard = {}
     status = {}
     for reg in registros:
-        reg_date_str = reg.registro.strftime('%d/%m/%Y')
+        reg_date_str = reg.spothit_datetime.strftime('%d/%m/%Y')
         if reg_date_str not in dashboard:
             dashboard[reg_date_str] = []
-        dashboard[reg_date_str].append({'id': reg.id, 'registro': reg.registro})
+        dashboard[reg_date_str].append({'id': reg.id, 'spothit_datetime': reg.spothit_datetime})
         status[reg_date_str] = getStatus(dashboard[reg_date_str])
 
     sorted_dashboard = OrderedDict(sorted(dashboard.items(), key=lambda x: x[0], reverse=True))
@@ -82,27 +82,27 @@ def getStatus(registros_list):
     registros = list(registros_list)
     registros_size = len(registros)
     if registros_size==1:
-        entrada = registros.pop()['registro']
+        entrada = registros.pop()['spothit_datetime']
         saida = timezone.localtime(entrada + timedelta(hours=8))
         return "Saída estimada para {}.".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==2:
-        entrada = registros.pop()['registro']
-        saida_almoco = registros.pop()['registro']
+        entrada = registros.pop()['spothit_datetime']
+        saida_almoco = registros.pop()['spothit_datetime']
         retorno_almoco = timezone.localtime(saida_almoco + timedelta(hours=1))
         return "Retorno do almoço estimado para {}.".format(retorno_almoco.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==3:
-        entrada = registros.pop()['registro']
-        saida_almoco = registros.pop()['registro']
-        retorno_almoco = registros.pop()['registro']
+        entrada = registros.pop()['spothit_datetime']
+        saida_almoco = registros.pop()['spothit_datetime']
+        retorno_almoco = registros.pop()['spothit_datetime']
         first_round = saida_almoco - entrada
         second_round = timedelta(hours=8) - first_round
         saida = timezone.localtime(retorno_almoco + second_round)
         return "Saída estimada para {}.".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==4:
-        entrada = registros.pop()['registro']
-        saida_almoco = registros.pop()['registro']
-        retorno_almoco = registros.pop()['registro']
-        saida = registros.pop()['registro']
+        entrada = registros.pop()['spothit_datetime']
+        saida_almoco = registros.pop()['spothit_datetime']
+        retorno_almoco = registros.pop()['spothit_datetime']
+        saida = registros.pop()['spothit_datetime']
         first_round = saida_almoco - entrada
         second_round = saida - retorno_almoco
         trabalhado = first_round + second_round
@@ -110,23 +110,23 @@ def getStatus(registros_list):
         minutes, seconds = divmod(remainder, 60)
         return "{} horas e {} minutos trabalhados.".format(hours, minutes)
     elif registros_size==5:
-        entrada = registros.pop()['registro']
-        saida_almoco = registros.pop()['registro']
-        retorno_almoco = registros.pop()['registro']
-        saida_janta = registros.pop()['registro']
-        retorno_janta = registros.pop()['registro']
+        entrada = registros.pop()['spothit_datetime']
+        saida_almoco = registros.pop()['spothit_datetime']
+        retorno_almoco = registros.pop()['spothit_datetime']
+        saida_janta = registros.pop()['spothit_datetime']
+        retorno_janta = registros.pop()['spothit_datetime']
         first_round = saida_almoco - entrada
         second_round = saida_janta - retorno_almoco
         third_round = timedelta(hours=8) - first_round + second_round
         saida = timezone.localtime(retorno_janta + third_round)
         return "Saída estimada para {} (com saída para janta).".format(saida.strftime('%d/%m/%Y %H:%M'))
     elif registros_size==6:
-        entrada = registros.pop()['registro']
-        saida_almoco = registros.pop()['registro']
-        retorno_almoco = registros.pop()['registro']
-        saida_janta = registros.pop()['registro']
-        retorno_janta = registros.pop()['registro']
-        saida = registros.pop()['registro']
+        entrada = registros.pop()['spothit_datetime']
+        saida_almoco = registros.pop()['spothit_datetime']
+        retorno_almoco = registros.pop()['spothit_datetime']
+        saida_janta = registros.pop()['spothit_datetime']
+        retorno_janta = registros.pop()['spothit_datetime']
+        saida = registros.pop()['spothit_datetime']
         first_round = saida_almoco - entrada
         second_round = saida_janta - retorno_almoco
         third_round = saida - retorno_janta
@@ -144,7 +144,7 @@ def user_logout(request):
 @login_required
 def novo(request):
     if request.method=='POST':
-        form=TimesheetForm(request.POST)
+        form=SpotHitForm(request.POST)
         if form.is_valid():
             registro=form.save(commit=False)
             registro.user=request.user
@@ -152,7 +152,7 @@ def novo(request):
             registro.save()
             return redirect('/mytimesheet/')
     else:
-        form = TimesheetForm()
+        form = SpotHitForm()
 
     context={"form": form}
     template = "novo.html"
@@ -160,9 +160,9 @@ def novo(request):
 
 @login_required
 def edit(request, pk):
-    registro = get_object_or_404(Timesheet, pk=pk)
+    registro = get_object_or_404(SpotHit, pk=pk)
     if request.method == "POST":
-        form = TimesheetForm(request.POST, instance=registro)
+        form = SpotHitForm(request.POST, instance=registro)
         if form.is_valid():
             registro = form.save(commit=False)
             registro.user = request.user
@@ -170,7 +170,7 @@ def edit(request, pk):
             registro.save()
             return redirect('/mytimesheet/')
     else:
-        form = TimesheetForm(instance=registro)
+        form = SpotHitForm(instance=registro)
 
     context={"form": form}
     template = "edit.html"
@@ -178,7 +178,7 @@ def edit(request, pk):
 
 @login_required
 def remove(request, pk):
-    registro = get_object_or_404(Timesheet, pk=pk)
+    registro = get_object_or_404(SpotHit, pk=pk)
     registro.delete()
     return redirect('/mytimesheet/')
 

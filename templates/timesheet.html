@@ -37,7 +37,7 @@
                                 <a href="/registro/remove/{{reg.id}}"><i class="remove icon"></i></a>
                             </div>
                             <div class="ui bottom attached segment center aligned">
-                                <a href="/registro/edit/{{reg.id}}">{{ reg.registro|date:"H:i" }} <i class="edit icon"></i></a>
+                                <a href="/registro/edit/{{reg.id}}">{{ reg.spothit_datetime|date:"H:i" }} <i class="edit icon"></i></a>
                             </div>
                         </div>
                     {% endfor %}
